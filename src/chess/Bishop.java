@@ -7,6 +7,9 @@ public class Bishop extends Piece{
 	
 	public Bishop(int x, int y, boolean color) {
 		super(x, y, color);
+		this.x = x;
+		this.y = y;
+		this.color = color;
 	}
 
 	@Override
@@ -16,7 +19,7 @@ public class Bishop extends Piece{
 	}
 	
 	public String toString() {
-		if(this.getColor()==true) {
+		if(color==true) {
 			return "wB";
 		}else {
 			return "bB";

@@ -1,14 +1,11 @@
 package chess;
 
-public class CreateBoard {
+public class Board {
 	static Piece[][] board = new Piece[8][8];
 
 	public static void createDefaultBoard() {
 
 		// this would be a 2d array of pieces
-		String wht = "  ";
-		String blk = "##";
-
 		board[0][0] = new Rook(0, 0, false);
 		board[0][1] = new Knight(0, 1, false);
 		board[0][2] = new Bishop(0, 2, false);
@@ -46,7 +43,6 @@ public class CreateBoard {
 		board[7][1] = new Knight(7, 1, true);
 		board[7][2] = new Bishop(7, 2, true);
 		board[7][3] = new Queen(7, 3, true);
-		;
 		board[7][4] = new King(7, 4, true);
 		board[7][5] = new Bishop(7, 5, true);
 		board[7][6] = new Knight(7, 6, true);
@@ -56,6 +52,11 @@ public class CreateBoard {
 			board[6][i] = new Pawn(6, i, true);
 		}
 
+	}
+	//updates board if a move is legal
+	public static void updateBoard(Pawn toMove) {
+		System.out.println(toMove.getX() + " "+ toMove.getY() + " " + toMove);
+		board[toMove.getX()][toMove.getY()]=toMove;
 	}
 
 	public static void printBoard() {
