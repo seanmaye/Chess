@@ -1,17 +1,17 @@
 package chess;
 
 public abstract class Piece {
-	private int x;
-	private int y;
-	private boolean color;
+	 int x;
+	 int y;
+	 boolean color;
 	
 	public Piece (int x, int y, boolean color) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
 	}
-	
-	public abstract void move();
+	//returns move if a invalid move is done
+	public abstract boolean move(int x, int y);
 	
 	public int getX() {
 		return x;

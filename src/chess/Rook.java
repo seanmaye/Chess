@@ -1,27 +1,22 @@
 package chess;
 
-public class Rook extends Piece{
-	private int x;
-	private int y;
-	private boolean color;
-	
+public class Rook extends Piece {
+
 	public Rook(int x, int y, boolean color) {
 		super(x, y, color);
-		this.x = x;
-		this.y = y;
-		this.color = color;
+
 	}
 
 	@Override
-	public void move() {
+	public boolean move(int x, int y) {
 		System.out.print("I can move anywhere horizontal and vertically!");
-		
+		return false;
 	}
-	
+
 	public String toString() {
-		if(color==true) {
+		if (color == true) {
 			return "wR";
-		}else {
+		} else {
 			return "bR";
 		}
 	}

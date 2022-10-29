@@ -1,27 +1,23 @@
 package chess;
 
-public class Empty extends Piece{
-	private int x;
-	private int y;
-	private boolean color;
-	
+public class Empty extends Piece {
+
 	public Empty(int x, int y, boolean color) {
 		super(x, y, color);
-		this.x = x;
-		this.y = y;
-		this.color = color;
 	}
 
 	@Override
-	public void move() {
-		
+	public boolean move(int x, int y) {
+		System.out.println("Illegal move, try again");
+		return false;
 	}
-	
+
 	public String toString() {
-		if(color == true) {
+		if (color == true) {
 			return "  ";
-		}else {
+		} else {
 			return "##";
 		}
+
 	}
 }

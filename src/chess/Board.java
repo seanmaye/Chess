@@ -53,10 +53,24 @@ public class Board {
 		}
 
 	}
-	//updates board if a move is legal
-	public static void updateBoard(Pawn toMove) {
-		System.out.println(toMove.getX() + " "+ toMove.getY() + " " + toMove);
-		board[toMove.getX()][toMove.getY()]=toMove;
+
+	// updates board if a move is legal
+	public static void updateBoard(Piece toMove, int x, int y) {
+		board[toMove.getX()][toMove.getY()] = toMove;
+
+		if (x % 2 == 0) {
+			if (y % 2 == 0) {
+				board[x][y] = new Empty(x, y, false);
+			} else {
+				board[x][y] = new Empty(x, y, true);
+			}
+		} else {
+			if (y % 2 == 1) {
+				board[x][y] = new Empty(x, y, false);
+			} else {
+				board[x][y] = new Empty(x, y, true);
+			}
+		}
 	}
 
 	public static void printBoard() {
