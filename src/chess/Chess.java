@@ -151,6 +151,15 @@ public class Chess {
 			if (isLegit) {
 				piece.setX(destinationX);
 				piece.setY(destinationY);
+				
+				if (Board.board[destinationX][destinationY] instanceof King) {
+					if (Board.board[destinationX][destinationY].getColor() == true) {
+						whiteking = false;
+					} else {
+						blackking = false;
+					}
+				}
+				
 				Board.updateBoard(piece, toMoveX, toMoveY);
 				if (turn == true) {
 					turn = false;
@@ -186,6 +195,7 @@ public class Chess {
 			}
 			
 		}
+		in.close();
 
 	}
 }
