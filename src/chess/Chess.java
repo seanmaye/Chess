@@ -4,12 +4,18 @@ import java.util.Scanner;
 
 public class Chess {
 	public static boolean turn;
+	public static boolean whiteking;
+	public static boolean blackking;
+	public static boolean drawRequest;
 
 	public static void main(String args[]) {
 		Scanner in = new Scanner(System.in);
 		Board.createDefaultBoard();
 		String input = "";
+		whiteking = true;
+		blackking = true;
 		turn = true;
+		drawRequest = false;
 		
 		while (input != "end") {
 			Board.printBoard();
@@ -23,6 +29,28 @@ public class Chess {
 			}
 			
 			input = in.nextLine();
+			
+			
+			//resign
+			if (input.equals("resign")) {
+				if (turn == true) {
+					System.out.println("Black wins");
+					break;
+				} else {
+					System.out.println("White wins");
+					break;
+				}
+			}
+			
+			//draw accept
+			if (drawRequest == true)
+				if (!input.equals("draw")) {
+					System.out.println("Illegal move, try again");
+					continue;
+				} else {
+					break;
+			} 
+
 			
 			char toTranslate1 = input.charAt(0);
 			int toTranslate2 = Character.getNumericValue(input.charAt(1));
@@ -49,6 +77,9 @@ public class Chess {
 				toMoveY = 6;
 			} else if (toTranslate1 == 'h') {
 				toMoveY = 7;
+			} else {
+				System.out.println("Illegal move, try again");
+				continue;
 			}
 
 			if (toTranslate2 == 1) {
@@ -67,6 +98,9 @@ public class Chess {
 				toMoveX = 1;
 			} else if (toTranslate2 == 8) {
 				toMoveX = 0;
+			} else {
+				System.out.println("Illegal move, try again");
+				continue;
 			}
 
 			if (toTranslate3 == 'a') {
@@ -85,6 +119,9 @@ public class Chess {
 				destinationY = 6;
 			} else if (toTranslate3 == 'h') {
 				destinationY = 7;
+			} else {
+				System.out.println("Illegal move, try again");
+				continue;
 			}
 
 			if (toTranslate4 == 1) {
@@ -103,6 +140,9 @@ public class Chess {
 				destinationX = 1;
 			} else if (toTranslate4 == 8) {
 				destinationX = 0;
+			} else {
+				System.out.println("Illegal move, try again");
+				continue;
 			}
 			
 			
@@ -120,6 +160,29 @@ public class Chess {
 				System.out.println("\n");
 			} else {
 				System.out.println("Illegal move, try again");
+				continue;
+			}
+			
+			
+			//draw request
+			if (input.length()>5) {
+				if (input.length()>6 && input.substring(5).equals(" draw?")) {
+					drawRequest = true;
+				} else {
+					System.out.println("Illegal move, try again");
+					continue;
+				}
+			}
+			
+			
+			if (!whiteking) {
+				System.out.println("Black wins");
+				break;  //does this terminate the program??
+			}
+			
+			if (!blackking) {
+				System.out.println("White wins");
+				break;
 			}
 			
 		}
