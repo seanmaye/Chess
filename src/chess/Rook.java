@@ -18,14 +18,47 @@ public class Rook extends Piece {
 		
 		
 		if (dX==x) {
-			return true;
+			if (dY > y) {
+				for (int j = y+1; j<dY; j++) {
+					if (!(Board.board[dX][j] instanceof Empty)) {
+						return false;
+					}
+				}
+			} else { //(dY < y)
+				for (int j = y-1; j>dY; j--) {
+					if (!(Board.board[dX][j] instanceof Empty)) {
+						return false;
+					}
+				}
+			}
 		}
-		
+			
+				
 		if (dY==y) {
-			return true;
+			if (dX > x) {
+				for (int i = x+1; i<dX; i++) {
+					if (!(Board.board[i][dY] instanceof Empty)) {
+						return false;
+					}
+				}
+			} else {
+				for (int i = x-1; i>dX; i--) {
+					if (!(Board.board[i][dY] instanceof Empty)) {
+						return false;
+					}
+				}
+			}
 		}
 		
-		return false;
+		if (Board.board[dX][dY] instanceof Empty) {
+			return true;
+		} else {
+			if (Board.board[dX][dY].getColor()== color) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 	}
 
 	public String toString() {
