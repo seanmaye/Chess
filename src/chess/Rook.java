@@ -17,6 +17,11 @@ public class Rook extends Piece {
 			return false;
 		
 		
+		if (!(dX==x || dY==y)) {
+			return false;
+		}
+		
+		
 		if (dX==x) {
 			if (dY > y) {
 				for (int j = y+1; j<dY; j++) {
@@ -41,7 +46,7 @@ public class Rook extends Piece {
 						return false;
 					}
 				}
-			} else {
+			} else { //(dX < x
 				for (int i = x-1; i>dX; i--) {
 					if (!(Board.board[i][dY] instanceof Empty)) {
 						return false;
