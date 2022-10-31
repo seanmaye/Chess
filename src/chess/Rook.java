@@ -8,8 +8,23 @@ public class Rook extends Piece {
 	}
 
 	@Override
-	public boolean move(int x, int y) {
-		System.out.print("I can move anywhere horizontal and vertically!");
+	public boolean move(int dX, int dY) {
+		if (Chess.turn != color) {
+			return false;
+		}
+		
+		if (dX==x && dY==y)
+			return false;
+		
+		
+		if (dX==x) {
+			return true;
+		}
+		
+		if (dY==y) {
+			return true;
+		}
+		
 		return false;
 	}
 

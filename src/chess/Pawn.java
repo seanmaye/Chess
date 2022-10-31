@@ -9,32 +9,38 @@ public class Pawn extends Piece {
 
 	}
 
-	public boolean move(int destinationX, int destinationY) {
-		// this might need to be changed to a way to check which players turn it is
+	public boolean move(int dX, int dY) {
+		if (Chess.turn != color) {
+			return false;
+		}
+		
+		if (dX==x && dY==y) {
+			return false;
+		}
+		
+		
 		if (color) {
-			if ((x - destinationX == 2 && destinationY == y) && isFirstMove == true) {
-				x = x - 2;
+			if ((x - dX == 2 && dY == y) && isFirstMove == true) {
+				//x = x - 2;
 				isFirstMove = false;
 				return true;
-			} else if (x - destinationX == 1 && destinationY == y) {
-				x = x - 1;
+			} else if (x - dX == 1 && dY == y) {
+				//x = x - 1;
 				isFirstMove = false;
 				return true;
 			} else {
-				System.out.println("Illegal move, try again");
 				return false;
 			}
 		} else {
-			if ((destinationX - x == 2 && destinationY == y) && isFirstMove == true) {
-				x = x + 2;
+			if ((dX - x == 2 && dY == y) && isFirstMove == true) {
+				//x = x + 2;
 				isFirstMove = false;
 				return true;
-			} else if (destinationX - x == 1 && destinationY == y) {
-				x = x + 1;
+			} else if (dX - x == 1 && dY == y) {
+				//x = x + 1;
 				isFirstMove = false;
 				return true;
 			} else {
-				System.out.println("Illegal move, try again");
 				return false;
 			}
 		}

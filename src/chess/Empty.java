@@ -8,7 +8,6 @@ public class Empty extends Piece {
 
 	@Override
 	public boolean move(int x, int y) {
-		System.out.println("Illegal move, try again");
 		return false;
 	}
 

@@ -11,7 +11,7 @@ public abstract class Piece {
 		this.color = color;
 	}
 	//returns move if a invalid move is done
-	public abstract boolean move(int x, int y);
+	public abstract boolean move(int dX, int dY);
 	
 	public int getX() {
 		return x;
@@ -26,15 +26,15 @@ public abstract class Piece {
 	}
 	
 	public void setX(int x) {
-		x = this.x;
+		this.x = x;
 	}
 	
 	public void setY(int y) {
-		y = this.y;
+		this.y = y;
 	}
 	
 	public void setColor(boolean color) {
-		color = this.color;
+		this.color = color;
 	}
 
 }

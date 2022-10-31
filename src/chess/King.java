@@ -7,8 +7,19 @@ public class King extends Piece {
 	}
 
 	@Override
-	public boolean move(int x, int y) {
-		System.out.print("I can move anywhere, in one space!");
+	public boolean move(int dX, int dY) {
+		if (Chess.turn != color) {
+			return false;
+		}
+		
+		if (dX==x && dY==y) {
+			return false;
+		}
+		
+		
+		if ((dX==x || dX==x-1 || dX==x+1) && (dY==y || dY==y-1 || dY==y+1))
+			return true;
+		
 		return false;
 
 	}

@@ -3,14 +3,27 @@ package chess;
 import java.util.Scanner;
 
 public class Chess {
+	public static boolean turn;
+
 	public static void main(String args[]) {
 		Scanner in = new Scanner(System.in);
 		Board.createDefaultBoard();
 		String input = "";
+		turn = true;
+		
 		while (input != "end") {
 			Board.printBoard();
-			System.out.print("Move: ");
+			
+			// boolean to keep track of whose turn it is
+			// white = true, black = false
+			if (turn == true) {
+				System.out.print("\nWhite's move: ");
+			} else {
+				System.out.print("\nBlack's move: ");
+			}
+			
 			input = in.nextLine();
+			
 			char toTranslate1 = input.charAt(0);
 			int toTranslate2 = Character.getNumericValue(input.charAt(1));
 			char toTranslate3 = input.charAt(3);
@@ -91,13 +104,24 @@ public class Chess {
 			} else if (toTranslate4 == 8) {
 				destinationX = 0;
 			}
+			
+			
 			Piece piece = Board.board[toMoveX][toMoveY];
 			boolean isLegit = piece.move(destinationX, destinationY);
 			if (isLegit) {
+				piece.setX(destinationX);
+				piece.setY(destinationY);
 				Board.updateBoard(piece, toMoveX, toMoveY);
+				if (turn == true) {
+					turn = false;
+				} else {
+					turn = true;
+				}
+				System.out.println("\n");
+			} else {
+				System.out.println("Illegal move, try again");
 			}
 			
-			//maybe we should make a turn int that keeps track of turns so we know if black or white can move
 		}
 
 	}
