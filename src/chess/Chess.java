@@ -211,17 +211,21 @@ public class Chess {
 					//castling
 					if (k.castleL==true) {
 						Rook r = (Rook)Board.board[destinationX][0];
+						int tempx = r.getX();
+						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY + 1);
-						Board.updateBoard(r, r.getX(), r.getY());
+						Board.updateBoard(r, tempx, tempy);
 						k.castleL = false;
 						r.moved = true;
 					}
 					if (k.castleR==true) {
 						Rook r = (Rook)Board.board[destinationX][7];
+						int tempx = r.getX();
+						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY - 1);
-						Board.updateBoard(r, r.getX(), r.getY());
+						Board.updateBoard(r, tempx, tempy);
 						k.castleR = false;
 						r.moved = true;
 					}
