@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class Chess {
 	public static boolean turn;
 	
+	public static boolean printBoard;
+	
 	public static int wkx = 7;
 	public static int wky = 4;
 	public static int bkx = 0;
@@ -20,19 +22,24 @@ public class Chess {
 		String input = "";
 		
 		turn = true;
+		printBoard = true;
 		
 		check = false;
 		drawRequest = false;
 		
 		while (input != "end") {
-			Board.printBoard();
-			System.out.println("\n");
-			
-			
-			//print check message
-			if (check) {
-				System.out.println("Check");
+			if (printBoard) {
+				Board.printBoard();
+				System.out.println("\n");
+				
+				//print check message
+				if (check) {
+					System.out.println("Check"); //new line?
+				}
+			} else {
+				printBoard = true;
 			}
+			
 			
 			
 			// boolean to keep track of whose turn it is
@@ -51,6 +58,7 @@ public class Chess {
 			if (drawRequest == true)
 				if (!input.equals("draw")) {
 					System.out.println("Illegal move, try again");
+					printBoard = false;
 					continue;
 				} else {
 					break;
@@ -97,6 +105,7 @@ public class Chess {
 				toMoveY = 7;
 			} else {
 				System.out.println("Illegal move, try again");
+				printBoard = false;
 				continue;
 			}
 
@@ -118,6 +127,7 @@ public class Chess {
 				toMoveX = 0;
 			} else {
 				System.out.println("Illegal move, try again");
+				printBoard = false;
 				continue;
 			}
 
@@ -139,6 +149,7 @@ public class Chess {
 				destinationY = 7;
 			} else {
 				System.out.println("Illegal move, try again");
+				printBoard = false;
 				continue;
 			}
 
@@ -160,10 +171,18 @@ public class Chess {
 				destinationX = 0;
 			} else {
 				System.out.println("Illegal move, try again");
+				printBoard = false;
 				continue;
 			}
 			
-			
+
+			//trim input string
+			if (input.length() >= 6) {
+				input = input.substring(6);
+			} else {
+				input = "-";
+			}
+
 			
 			Piece piece = Board.board[toMoveX][toMoveY];
 			boolean isLegit = piece.move(destinationX, destinationY);
@@ -178,6 +197,7 @@ public class Chess {
 					k = (King) piece;
 					k.trackKingPos();
 					
+					//castling
 					if (k.castleL==true) {
 						Rook r = (Rook)Board.board[destinationX][0];
 						r.setX(destinationX);
@@ -195,6 +215,109 @@ public class Chess {
 						r.moved = true;
 					}
 				}
+				//reset check
+				check = false;
+				
+				
+				//promotion
+				if (piece instanceof Pawn) {
+					if (piece.getColor()==true && piece.getX()==7) {
+						if (input.equals("-")) {
+							piece = new Queen(destinationX, destinationY, true);
+						}
+						String prom = input.substring(0,1);
+						if (prom.equals('N')) {
+							piece = new Knight(destinationX, destinationY, true);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('B')) {
+							piece = new Bishop(destinationX, destinationY, true);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('R')) {
+							piece = new Rook(destinationX, destinationY, true);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('Q')) {
+							piece = new Queen(destinationX, destinationY, true);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+					}
+					if (piece.getColor()==false && piece.getX()==0) {
+						if (input.equals("-")) {
+							piece = new Queen(destinationX, destinationY, false);
+						}
+						String prom = input.substring(0,1);
+						if (prom.equals('N')) {
+							piece = new Knight(destinationX, destinationY, false);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('B')) {
+							piece = new Bishop(destinationX, destinationY, false);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('R')) {
+							piece = new Rook(destinationX, destinationY, false);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+						if (prom.equals('Q')) {
+							piece = new Queen(destinationX, destinationY, false);
+							//trim input
+							if (input.length() >= 2) {
+								input = input.substring(2);
+							} else {
+								input = "-";
+							}
+						}
+					}
+				}
+				
+				//draw request
+				if (!(input.equals("-"))) {
+					if (input.equals("draw?")) {
+						drawRequest = true;
+					} else { //some wonky stuff going on here
+						System.out.println("Illegal move, try again");
+						printBoard = false;
+						continue;
+					}
+				}
+				
 				
 				
 				Board.updateBoard(piece, toMoveX, toMoveY);
@@ -226,30 +349,22 @@ public class Chess {
 				}
 				
 				
+				//prepare for next turn
 				if (turn == true) {
 					turn = false;
 				} else {
 					turn = true;
 				}
-				check = false;
-				
 				System.out.println("\n");
+				
+				
 				
 			} else {
 				System.out.println("Illegal move, try again");
+				printBoard = false;
 				continue;
 			}
 			
-			
-			//draw request
-			if (input.length()>5) {
-				if (input.length()>6 && input.substring(5).equals(" draw?")) {
-					drawRequest = true;
-				} else {
-					System.out.println("Illegal move, try again");
-					continue;
-				}
-			}
 		}
 		
 		in.close();
