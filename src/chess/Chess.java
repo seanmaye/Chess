@@ -31,9 +31,8 @@ public class Chess {
 			
 			//print check message
 			if (check) {
-				System.out.println("Check\n");
+				System.out.println("Check");
 			}
-			check = false;
 			
 			
 			// boolean to keep track of whose turn it is
@@ -173,11 +172,28 @@ public class Chess {
 				piece.setY(destinationY);
 				
 				
-				//keep track of king positions to use for check & checkmate
+				//keep track of king positions to use for check & checkmate, and castling
 				King k;
 				if (piece instanceof King) {
 					k = (King) piece;
 					k.trackKingPos();
+					
+					if (k.castleL==true) {
+						Rook r = (Rook)Board.board[destinationX][0];
+						r.setX(destinationX);
+						r.setY(destinationY + 1);
+						Board.updateBoard(r, r.getX(), r.getY());
+						k.castleL = false;
+						r.moved = true;
+					}
+					if (k.castleR==true) {
+						Rook r = (Rook)Board.board[destinationX][7];
+						r.setX(destinationX);
+						r.setY(destinationY - 1);
+						Board.updateBoard(r, r.getX(), r.getY());
+						k.castleR = false;
+						r.moved = true;
+					}
 				}
 				
 				
@@ -215,6 +231,8 @@ public class Chess {
 				} else {
 					turn = true;
 				}
+				check = false;
+				
 				System.out.println("\n");
 				
 			} else {

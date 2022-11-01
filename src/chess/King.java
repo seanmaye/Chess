@@ -1,9 +1,15 @@
 package chess;
 
 public class King extends Piece {
-
+	public boolean moved;
+	public boolean castleL;
+	public boolean castleR;
+	
 	public King(int x, int y, boolean color) {
 		super(x, y, color);
+		moved = false;
+		castleL = false;
+		castleR = false;
 	}
 
 	@Override
@@ -17,10 +23,41 @@ public class King extends Piece {
 		}
 		
 		
+		
+		//castling
+		if ((dX==x && dY==y-2) && Board.board[dX][0] instanceof Rook && Board.board[dX][0].getColor()==color) {
+			Rook r = (Rook) Board.board[dX][0];
+			if (moved==false && r.moved==false && !Chess.check) {
+				if(Board.board[dX][y-1] instanceof Empty
+						&& Board.board[dX][y-2] instanceof Empty
+						&& Board.board[dX][y-3] instanceof Empty){
+					castleL = true;
+					moved = true;
+					return true;
+				}
+			}
+		}
+		
+		if ((dX==x && dY==y+2) && Board.board[dX][7] instanceof Rook && Board.board[dX][7].getColor()==color) {
+			Rook r = (Rook) Board.board[dX][7];
+			if (moved==false && r.moved==false && !Chess.check) {
+				if(Board.board[dX][y+1] instanceof Empty
+						&& Board.board[dX][y+2] instanceof Empty){
+					castleR = true;
+					moved = true;
+					return true;
+				}
+			}
+		}
+		
+			
+		
 		if ((dX==x || dX==x-1 || dX==x+1) && (dY==y || dY==y-1 || dY==y+1)) {
 			if (Board.board[dX][dY] instanceof Empty){
+				moved = true;
 				return true;
 			} else if (!(Board.board[dX][dY] instanceof Empty) && (Board.board[dX][dY].getColor() != color)) {
+				moved = true;
 				return true;
 			}
 		}

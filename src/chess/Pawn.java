@@ -30,7 +30,7 @@ public class Pawn extends Piece {
 				//x = x - 1;
 				isFirstMove = false;
 				return true;
-			} else if (((dX == x-1 && dY == y-1) || (dX == x-1 && dY == y-1))
+			} else if (((dX == x-1 && dY == y-1) || (dX == x-1 && dY == y+1))
 					&& ((!(Board.board[dX][dY] instanceof Empty) && (Board.board[dX][dY].getColor() != color)))){
 				isFirstMove = false;
 				return true;

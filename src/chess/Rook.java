@@ -1,9 +1,11 @@
 package chess;
 
 public class Rook extends Piece {
+	public boolean moved;
 
 	public Rook(int x, int y, boolean color) {
 		super(x, y, color);
+		moved = false;
 
 	}
 
@@ -61,6 +63,7 @@ public class Rook extends Piece {
 			if (Board.board[dX][dY].getColor()== color) {
 				return false;
 			} else {
+				moved = true;
 				return true;
 			}
 		}
