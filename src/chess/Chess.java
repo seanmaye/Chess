@@ -182,11 +182,22 @@ public class Chess {
 			} else {
 				input = "-";
 			}
+			
+			//draw request
+			if (!(input.equals("-"))) {
+				if (input.equals("draw?")) {
+					drawRequest = true;
+				} else {
+					System.out.println("Illegal move, try again");
+					printBoard = false;
+					continue;
+				}
+			}
 
 			
 			Piece piece = Board.board[toMoveX][toMoveY];
 			boolean isLegit = piece.move(destinationX, destinationY);
-			if (isLegit) {
+			if (isLegit) {				
 				piece.setX(destinationX);
 				piece.setY(destinationY);
 				
@@ -221,7 +232,7 @@ public class Chess {
 				
 				//promotion
 				if (piece instanceof Pawn) {
-					if (piece.getColor()==true && piece.getX()==7) {
+					if (piece.getColor()==true && piece.getX()==0) {
 						if (input.equals("-")) {
 							piece = new Queen(destinationX, destinationY, true);
 						}
@@ -263,7 +274,7 @@ public class Chess {
 							}
 						}
 					}
-					if (piece.getColor()==false && piece.getX()==0) {
+					if (piece.getColor()==false && piece.getX()==7) {
 						if (input.equals("-")) {
 							piece = new Queen(destinationX, destinationY, false);
 						}
@@ -305,19 +316,7 @@ public class Chess {
 							}
 						}
 					}
-				}
-				
-				//draw request
-				if (!(input.equals("-"))) {
-					if (input.equals("draw?")) {
-						drawRequest = true;
-					} else { //some wonky stuff here
-						System.out.println("Illegal move, try again");
-						printBoard = false;
-						continue;
-					}
-				}
-				
+				}				
 				
 				
 				Board.updateBoard(piece, toMoveX, toMoveY);

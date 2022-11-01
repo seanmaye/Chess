@@ -54,9 +54,17 @@ public class King extends Piece {
 		
 		if ((dX==x || dX==x-1 || dX==x+1) && (dY==y || dY==y-1 || dY==y+1)) {
 			if (Board.board[dX][dY] instanceof Empty){
+				King k = new King(dX, dY, color);
+				if (k.inCheck()) {
+					return false;
+				}
 				moved = true;
 				return true;
 			} else if (!(Board.board[dX][dY] instanceof Empty) && (Board.board[dX][dY].getColor() != color)) {
+				King k = new King(dX, dY, color);
+				if (k.inCheck()) {
+					return false;
+				}
 				moved = true;
 				return true;
 			}
