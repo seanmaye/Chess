@@ -19,9 +19,10 @@ public class Bishop extends Piece {
 		boolean hit  = false;
 		boolean clear = true;
 		
-		for (int i = x+1, j = y+1; i<dX && j<dY; i++, j++) {
+		for (int i = x+1, j = y+1; i<8 && j<8; i++, j++) {
 			if (i==dX && j==dY) {
 				hit = true;
+				break;
 			}
 			if (!(Board.board[i][j] instanceof Empty)){
 				clear = false;
@@ -45,6 +46,7 @@ public class Bishop extends Piece {
 		for (int i = x-1, j = y-1; i>=0 && j>=0; i--, j--) {
 			if (i==dX && j==dY) {
 				hit = true;
+				break;
 			}
 			if (!(Board.board[i][j] instanceof Empty)){
 				clear = false;
@@ -67,6 +69,7 @@ public class Bishop extends Piece {
 		for (int i = x+1, j = y-1; i<8 && j>=0; i++, j--) {
 			if (i==dX && j==dY) {
 				hit = true;
+				break;
 			}
 			if (!(Board.board[i][j] instanceof Empty)){
 				clear = false;
@@ -89,6 +92,7 @@ public class Bishop extends Piece {
 		for (int i = x-1, j = y+1; i>=0 && j<8; i--, j++) {
 			if (i==dX && j==dY) {
 				hit = true;
+				break;
 			}
 			if (!(Board.board[i][j] instanceof Empty)){
 				clear = false;
