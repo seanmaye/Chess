@@ -311,7 +311,7 @@ public class Chess {
 				if (!(input.equals("-"))) {
 					if (input.equals("draw?")) {
 						drawRequest = true;
-					} else { //some wonky stuff going on here
+					} else { //some wonky stuff here
 						System.out.println("Illegal move, try again");
 						printBoard = false;
 						continue;
