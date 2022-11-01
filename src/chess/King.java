@@ -28,7 +28,138 @@ public class King extends Piece {
 		return false;
 
 	}
+	
+	
+	
+	//update king position
+	public void trackKingPos() {
+		if (color) {
+			Chess.wkx = x;
+			Chess.wky = y;
+		}
+		else {
+			Chess.bkx = x;
+			Chess.bky = y;
+		}
+	}
+	
+	
+	//detect check
+	public boolean inCheck() {
+		Piece p;
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				p = Board.board[i][j];
+				
+				//empty square
+				if (p instanceof Empty) {
+					continue;
+				}
+				
+				//p is same color, so no threat
+				if (color == p.color) {
+					continue;
+				}
+				
+				//p is opposite color, threat
+				if (p.move(x,y)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	//detect checkmate
+	public boolean inCheckmate() {
+		King k;
+		
+		boolean test1;
+		int testX = x-1;
+		int testY = y-1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test1 = k.inCheck();
+		} else {
+			test1 = false;
+		}
+		
+		boolean test2;
+		testY = y;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test2 = k.inCheck();
+		} else {
+			test2 = false;
+		}
+		
+		boolean test3;
+		testY = y+1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test3 = k.inCheck();
+		} else {
+			test3 = false;
+		}
+		
+		
+		boolean test4;
+		testX = x;
+		testY = y-1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test4 = k.inCheck();
+		} else {
+			test4 = false;
+		}
+		
+		boolean test5;
+		testY = y+1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test5 = k.inCheck();
+		} else {
+			test5 = false;
+		}
+		
+		
+		boolean test6;
+		testX = x+1;
+		testY = y-1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test6 = k.inCheck();
+		} else {
+			test6 = false;
+		}
+		
+		boolean test7;
+		testY = y;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test7 = k.inCheck();
+		} else {
+			test7 = false;
+		}
+		
+		boolean test8;
+		testY = y+1;
+		if (move(testX,testY)) {
+			k = new King(testX, testY, color);
+			test8 = k.inCheck();
+		} else {
+			test8 = false;
+		}
+		
+		
+		return (test1 && test2 && test3 && test4 && test5 && test6 && test7 && test8);
+	}
 
+	
+	
 	public String toString() {
 		if (color == true) {
 			return "wK";

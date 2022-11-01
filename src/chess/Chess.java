@@ -4,31 +4,58 @@ import java.util.Scanner;
 
 public class Chess {
 	public static boolean turn;
-	public static boolean whiteking;
-	public static boolean blackking;
+	
+	public static int wkx = 7;
+	public static int wky = 4;
+	public static int bkx = 0;
+	public static int bky = 4;
+	
+	public static boolean check;
+	
 	public static boolean drawRequest;
 
 	public static void main(String args[]) {
 		Scanner in = new Scanner(System.in);
 		Board.createDefaultBoard();
 		String input = "";
-		whiteking = true;
-		blackking = true;
+		
 		turn = true;
+		
+		check = false;
 		drawRequest = false;
 		
 		while (input != "end") {
 			Board.printBoard();
+			System.out.println("\n");
+			
+			
+			//print check message
+			if (check) {
+				System.out.println("Check\n");
+			}
+			check = false;
+			
 			
 			// boolean to keep track of whose turn it is
 			// white = true, black = false
 			if (turn == true) {
-				System.out.print("\nWhite's move: ");
+				System.out.print("White's move: ");
 			} else {
-				System.out.print("\nBlack's move: ");
+				System.out.print("Black's move: ");
 			}
 			
+			
+			
 			input = in.nextLine();
+			
+			//draw accept
+			if (drawRequest == true)
+				if (!input.equals("draw")) {
+					System.out.println("Illegal move, try again");
+					continue;
+				} else {
+					break;
+			} 
 			
 			
 			//resign
@@ -42,14 +69,6 @@ public class Chess {
 				}
 			}
 			
-			//draw accept
-			if (drawRequest == true)
-				if (!input.equals("draw")) {
-					System.out.println("Illegal move, try again");
-					continue;
-				} else {
-					break;
-			} 
 
 			
 			char toTranslate1 = input.charAt(0);
@@ -146,27 +165,59 @@ public class Chess {
 			}
 			
 			
+			
 			Piece piece = Board.board[toMoveX][toMoveY];
 			boolean isLegit = piece.move(destinationX, destinationY);
 			if (isLegit) {
 				piece.setX(destinationX);
 				piece.setY(destinationY);
 				
-				if (Board.board[destinationX][destinationY] instanceof King) {
-					if (Board.board[destinationX][destinationY].getColor() == true) {
-						whiteking = false;
-					} else {
-						blackking = false;
-					}
+				
+				//keep track of king positions to use for check & checkmate
+				King k;
+				if (piece instanceof King) {
+					k = (King) piece;
+					k.trackKingPos();
 				}
 				
+				
 				Board.updateBoard(piece, toMoveX, toMoveY);
+								
+				
+				//detect check: any piece of the opposite color can move to the king
+				k = (King)Board.board[wkx][wky];
+				if (!turn && k.inCheck()) {
+					check = true;
+				}
+				k = (King)Board.board[bkx][bky];
+				if (!turn && k.inCheck()) {
+					check = true;
+				}
+				
+				
+				//detect checkmate
+				k = (King)Board.board[wkx][wky];
+				if (!turn && k.inCheckmate()) {
+					System.out.println("Checkmate\n");
+					System.out.println("Black wins");
+					break;
+				}
+				k = (King)Board.board[bkx][bky];
+				if (turn && k.inCheckmate()) {
+					System.out.println("Checkmate\n");
+					System.out.println("White wins");
+					break;
+				}
+				
+				
+				
 				if (turn == true) {
 					turn = false;
 				} else {
 					turn = true;
 				}
 				System.out.println("\n");
+				
 			} else {
 				System.out.println("Illegal move, try again");
 				continue;
@@ -182,19 +233,8 @@ public class Chess {
 					continue;
 				}
 			}
-			
-			
-			if (!whiteking) {
-				System.out.println("Black wins");
-				break;  //does this terminate the program??
-			}
-			
-			if (!blackking) {
-				System.out.println("White wins");
-				break;
-			}
-			
 		}
+		
 		in.close();
 
 	}
