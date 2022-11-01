@@ -18,10 +18,11 @@ public class Queen extends Piece {
 		
 		
 		//bishop code
+		if(dX!= x && dY!=y) {
 		boolean hit  = false;
 		boolean clear = true;
 		
-		for (int i = x+1, j = y+1; i<dX && j<dY; i++, j++) {
+		for (int i = x+1, j = y+1; i<=dX && j<=dY; i++, j++) {
 			if (i==dX && j==dY) {
 				hit = true;
 			}
@@ -44,7 +45,7 @@ public class Queen extends Piece {
 		
 		
 		clear = true;
-		for (int i = x-1, j = y-1; i>=0 && j>=0; i--, j--) {
+		for (int i = x-1, j = y-1; i>=dX && j>=dY; i--, j--) {
 			if (i==dX && j==dY) {
 				hit = true;
 			}
@@ -114,9 +115,9 @@ public class Queen extends Piece {
 		if (dY==y) {
 			return true;
 		}
+		}
 		
-		
-		
+		if((dX==x && dY!=y) || (dX!=x && dY==y)) {
 		//rook code
 		if (!(dX==x || dY==y)) {
 			return false;
@@ -165,6 +166,8 @@ public class Queen extends Piece {
 				return true;
 			}
 		}
+		}
+		return false;
 	}
 
 	public String toString() {
