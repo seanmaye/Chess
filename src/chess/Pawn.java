@@ -22,7 +22,7 @@ public class Pawn extends Piece {
 		
 		if (color) {
 			//System.out.println(x +" " +y);
-			if(x==3 &&Board.board[x][y-1]instanceof Pawn) {
+			if(x==3 && y-1>=0 && Board.board[x][y-1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y-1];
 				
 				if (toEnpassant.move==1) {
@@ -41,7 +41,7 @@ public class Pawn extends Piece {
 				}else {
 					return false;
 				}
-			}else if(x==3 &&Board.board[x][y+1]instanceof Pawn) {
+			}else if(x==3 && y+1<8 && Board.board[x][y+1]instanceof Pawn ) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y+1];
 				
 				if (toEnpassant.move==1) {
@@ -81,7 +81,7 @@ public class Pawn extends Piece {
 				return false;
 			}
 		} else {
-			if(x==4 &&Board.board[x][y-1]instanceof Pawn) {
+			if(x==4 && y>=8 &&Board.board[x][y-1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y-1];
 				
 				if (toEnpassant.move==1) {
@@ -100,7 +100,7 @@ public class Pawn extends Piece {
 				}else {
 					return false;
 				}
-			}else if(x==4 &&Board.board[x][y+1]instanceof Pawn) {
+			}else if(x==4 && y+1<8 &&Board.board[x][y+1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y+1];
 				
 				if (toEnpassant.move==1) {
