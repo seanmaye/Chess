@@ -190,7 +190,7 @@ public class Chess {
 					check = true;
 				}
 				k = (King)Board.board[bkx][bky];
-				if (!turn && k.inCheck()) {
+				if (turn && k.inCheck()) {
 					check = true;
 				}
 				
@@ -208,7 +208,6 @@ public class Chess {
 					System.out.println("White wins");
 					break;
 				}
-				
 				
 				
 				if (turn == true) {
