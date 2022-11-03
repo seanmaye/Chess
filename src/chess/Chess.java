@@ -65,10 +65,17 @@ public class Chess {
 	*/
 	public static boolean hypeCheck(Piece piece, int dX, int dY, int toMoveX, int toMoveY) {
 		if (turn) {
-			King k;
+			King k=null;
+			if(piece instanceof King) {
+				k=(King)piece;
+			}
+			
 			piece.setX(dX);
 			piece.setY(dY);
 			Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+			if(k!=null) {
+			k.trackKingPos();
+			}
 			k = (King) Board.board[wkx][wky];
 
 			if (k.inCheck()) {
@@ -93,11 +100,17 @@ public class Chess {
 				return true;
 			}
 		} else if (!turn) {
-			King k;
+			King k=null;
+			if(piece instanceof King) {
+				k=(King)piece;
+			}
 
 			piece.setX(dX);
 			piece.setY(dY);
 			Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+			if(k!=null) {
+				k.trackKingPos();
+				}
 			k = (King) Board.board[bkx][bky];
 
 			if (k.inCheck()) {
