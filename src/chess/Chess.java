@@ -1,32 +1,78 @@
 package chess;
 
 import java.util.Scanner;
-
+/** Represents a pawn piece in the game of chess.   
+ * @author Vanessa Chin
+ * @author Sean Maye
+ * @version 1.0
+*/
 public class Chess {
+	/**
+	*Keeps track of players turn, true =white , false = black
+	*/
 	public static boolean turn;
-
+	
+	/**
+	*Keeps track of whether or not the program should print the board depening on if the move is legal or not
+	*/
 	public static boolean printBoard;
+	/**
+	*The white kings x value
+	*/
 	public static int wkx = 7;
+	/**
+	*The white kings y value
+	*/
 	public static int wky = 4;
+	/**
+	*The black kings x value
+	*/
 	public static int bkx = 0;
+	/**
+	*The black kings y value
+	*/
 	public static int bky = 4;
+	/**
+	*Keeps track of whether or not the white player is in check
+	*/
 	public static boolean wCheck = false;
+	/**
+	*Keeps track of whether or not the black player is in check
+	*/
 	public static boolean bCheck = false;
-
+	/**
+	*Legacy check that works with castling
+	*/
 	public static boolean check;
+	/**
+	*A 2D array of pieces that keeps track of the board before any moves have been made on a turn
+	*/
 	public static Piece[][] ghostBoard = new Piece[Board.board.length][];
+	/**
+	*Flag that keeps track of if a player has requested a draw
+	*/
 	public static boolean drawRequest;
-
+	
+	/**
+	* Checks if a hypothetical move will put a king in check
+	* <p>
+	* Makes a move on the board, if the move will result in the king being put in check, the board state is reverted 
+	* @param  piece  the piece that is making the hypothetical move
+	* @param  dX  the x coordinate of the proposed move of the piece 
+	* @param  dy  the y coordinate of the proposed move of the piece
+	* @param  toMoveX  the current x coordinate of the piece
+	* @param  toMoveY  the current y coordinate of the piece
+	*/
 	public static boolean hypeCheck(Piece piece, int dX, int dY, int toMoveX, int toMoveY) {
 		if (turn) {
 			King k;
-
 			piece.setX(dX);
 			piece.setY(dY);
 			Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
 			k = (King) Board.board[wkx][wky];
 
 			if (k.inCheck()) {
+				wCheck = true;
 
 				for (int i = 0; i < Board.board.length; i++) {
 					Piece[] aMatrix = ghostBoard[i];
@@ -42,10 +88,9 @@ public class Chess {
 						if (p instanceof King) {
 							((King) p).trackKingPos();
 						}
-
 					}
 				}
-				return false;
+				return true;
 			}
 		} else if (!turn) {
 			King k;
@@ -74,12 +119,16 @@ public class Chess {
 
 					}
 				}
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
-
+	/**
+	* Main method of the chess program.
+	* <p>
+	* Handles player input, gameplay loop, and UI. 
+	*/
 	public static void main(String args[]) {
 		Scanner in = new Scanner(System.in);
 		Board.createDefaultBoard();
@@ -105,9 +154,9 @@ public class Chess {
 
 				// print check message
 				if (wCheck && turn) {
-					System.out.println("WCheck"); // new line?
+					System.out.println("Check");
 				} else if (bCheck && !turn) {
-					System.out.println("BCheck");
+					System.out.println("Check");
 				}
 			} else {
 				printBoard = true;
@@ -271,38 +320,38 @@ public class Chess {
 			boolean isLegit = piece.move(destinationX, destinationY);
 			if (isLegit) {
 				King k;
-				if (turn && wCheck) {
-					boolean isCheck = hypeCheck(piece, destinationX, destinationY, toMoveX, toMoveY);
-
-					/*
-					 * piece.setX(destinationX); piece.setY(destinationY);
-					 * Board.updateBoard(Board.board, piece, toMoveX, toMoveY); k = (King)
-					 * Board.board[wkx][wky];
-					 * 
-					 * if (k.inCheck()) { check = true;
-					 * 
-					 * for (int i = 0; i < Board.board.length; i++) { Piece[] aMatrix =
-					 * ghostBoard[i]; int aLength = aMatrix.length; Board.board[i] = new
-					 * Piece[aLength]; System.arraycopy(aMatrix, 0, Board.board[i], 0, aLength); }
-					 * for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) { Piece p =
-					 * ghostBoard[i][j]; p.x = i; p.y = j; if (p instanceof King) { ((King)
-					 * p).trackKingPos(); } } } Board.printBoard(ghostBoard);
-					 * 
-					 */
-					if (isCheck) {
+				if (turn) {
+					boolean isntCheck = hypeCheck(piece, destinationX, destinationY, toMoveX,toMoveY);
+						  if (!isntCheck) {
+							  wCheck = false;
+							 
+							  
+						  } else {
+						System.out.println("Illegal move, try again!!");
+						printBoard = false;
 						continue;
-					} else {
+					} /*else {
+						
+					}*/
+				}
+				
 
+				if (!turn) {
+					boolean isntCheck = hypeCheck(piece, destinationX, destinationY, toMoveX,toMoveY);
+						  if (!isntCheck) { 
+							  bCheck=false;
+							  
+						 
+					
+						/*System.out.println("Illegal move, try again");
+						printBoard = false;
+						continue;*/
+					} else {
 						System.out.println("Illegal move, try again");
 						printBoard = false;
 						continue;
+						/*bCheck = false;*/
 					}
-				} else {
-					wCheck = false;
-				}
-
-				if (!turn && bCheck) {
-					System.out.println("Do a move to get you out of check");
 				}
 
 				piece.setX(destinationX);
@@ -324,7 +373,8 @@ public class Chess {
 						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY + 1);
-						Board.updateBoard(Board.board,piece, tempx, tempy);
+						Board.updateBoard(Board.board, piece, tempx, tempy);
+						k.trackKingPos();
 						k.castleL = false;
 						r.moved = true;
 					}
@@ -334,7 +384,8 @@ public class Chess {
 						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY - 1);
-						Board.updateBoard(Board.board,piece, tempx, tempy);
+						k.trackKingPos();
+						Board.updateBoard(Board.board, piece, tempx, tempy);
 						k.castleR = false;
 						r.moved = true;
 					}
@@ -432,7 +483,25 @@ public class Chess {
 
 				Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
 
-// prepare for next turn
+				k = (King) Board.board[wkx][wky];
+				if (!turn && k.inCheck()) {
+					wCheck = true;
+				}
+				/*if (k.inCheckmate()) {
+					System.out.println ("Black wins");
+					break;
+				}*/
+				
+				k = (King) Board.board[bkx][bky];
+				if (turn && k.inCheck()) {
+					bCheck = true;
+				}
+				/*if (k.inCheckmate()) {
+					System.out.println("White wins");
+					break;
+				}*/
+
+				// prepare for next turn
 				if (turn == true) {
 					turn = false;
 				} else {

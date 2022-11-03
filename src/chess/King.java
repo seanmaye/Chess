@@ -1,11 +1,36 @@
 package chess;
-
+/** Represents a pawn piece in the game of chess.   
+ * @author Vanessa Chin
+ * @author Sean Maye
+ * @version 1.0
+*/
 public class King extends Piece {
+	/**
+	*Keeps track of whether or not a rook has made its first move
+	*/
 	public boolean moved;
+	/**
+	*Keeps track if king is castled to left side
+	*/
 	public boolean castleL;
+	/**
+	*Keeps track if king is castled to right side
+	*/
 	public boolean castleR;
+	/**
+	*Variable that reflects if pieces moved for the purpose of checking if the king is in check
+	*/
 	public static boolean isChecking;
 	
+	/**
+	* Creates the King object
+	* <p>
+	* This method calls its super class piece 
+	* @param  x  the x coordinate of the king
+	* @param  y  the y coordinate of the king
+	* @param  color the color of the king piece 
+	* @see Piece 
+	*/
 	public King(int x, int y, boolean color) {
 		super(x, y, color);
 		moved = false;
@@ -13,7 +38,17 @@ public class King extends Piece {
 		castleR = false;
 	}
 
-	@Override
+	/**
+	* Returns true if the move made by the king is legal.
+	* Handles Castling
+	* The dX and dY arguments must be integers. 
+	* <p>
+	* This method is overridden from its super class, piece
+	* @param  dX the x coordinate of where the king would like to move
+	* @param  dY the y coordinate of where the king would like to move
+	* @return      true if the move is legal and false if the move is illegal
+	* @see Piece 
+	*/
 	public boolean move(int dX, int dY) {
 		if (!King.isChecking&&Chess.turn != color) {
 			return false;
@@ -91,7 +126,9 @@ public class King extends Piece {
 	
 	
 	
-	//update king position
+	/**
+	* Updates the x and y variables that track the white and black king
+	*/
 	public void trackKingPos() {
 		if (color) {
 			Chess.wkx = x;
@@ -104,7 +141,13 @@ public class King extends Piece {
 	}
 	
 	
-	//detect check
+	/**
+	* Returns true if the king is in check
+	* <p>
+	* Checks each piece to see if it can make a valid move onto the king
+	* @return      true if king is in check and false if king is not in check
+	* @see Piece 
+	*/
 	public boolean inCheck() {
 		Piece p;
 		isChecking=true;
@@ -137,93 +180,31 @@ public class King extends Piece {
 	
 	
 	
-	//detect checkmate
+	/**
+	* Tests if the king is in checkmate
+	* <p>
+	* Checks each piece to see if it can make a valid move to bring the king out of checkmate
+	* @return      true if king is in checmate and false if king is not in checkmate
+	* @see Piece 
+	*/
 	/*public boolean inCheckmate() {
-		King k;
-		
-		boolean test1;
-		int testX = x-1;
-		int testY = y-1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);.
-			test1 = k.inCheck();
-		} else {
-			test1 = false;
+		for (int i = 0; i<8; i++) {
+			for (int j = 0; j<8;j++) {
+				Piece p = Board.board[i][j];
+				System.out.println(p);
+				if (p.outOfCheck(color)) {
+					return false;
+				}
+			}
 		}
-		
-		boolean test2;
-		testY = y;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test2 = k.inCheck();
-		} else {
-			test2 = false;
-		}
-		
-		boolean test3;
-		testY = y+1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test3 = k.inCheck();
-		} else {
-			test3 = false;
-		}
-		
-		
-		boolean test4;
-		testX = x;
-		testY = y-1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test4 = k.inCheck();
-		} else {
-			test4 = false;
-		}
-		
-		boolean test5;
-		testY = y+1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test5 = k.inCheck();
-		} else {
-			test5 = false;
-		}
-		
-		
-		boolean test6;
-		testX = x+1;
-		testY = y-1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test6 = k.inCheck();
-		} else {
-			test6 = false;
-		}
-		
-		boolean test7;
-		testY = y;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test7 = k.inCheck();
-		} else {
-			test7 = false;
-		}
-		
-		boolean test8;
-		testY = y+1;
-		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
-			test8 = k.inCheck();
-		} else {
-			test8 = false;
-		}
-		
-		
-		return (test1 && test2 && test3 && test4 && test5 && test6 && test7 && test8);
+		return true;
 	}*/
 
 	
-	
+	/**
+	* Returns string that will represent the piece on the board
+	* @return wK if the piece is white and bK if the piece is black
+	*/
 	public String toString() {
 		if (color == true) {
 			return "wK";

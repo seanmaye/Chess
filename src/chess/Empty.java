@@ -37,6 +37,11 @@ public class Empty extends Piece {
 		return false;
 	}
 	
+	
+	public boolean outOfCheck(boolean color) {
+		return false;
+	}
+	
 	/**
 	* Returns string that will represent the empty space on the board
 	* @return         if the space is white and ## if the space is black

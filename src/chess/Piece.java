@@ -36,5 +36,24 @@ public abstract class Piece {
 	public void setColor(boolean color) {
 		this.color = color;
 	}
+	
+	/*public boolean outOfCheck(boolean color) {
+		if (this.color != color) {
+			return false;
+		}
+		
+		for (int i = 0; i<8; i++) {
+			for (int j = 0; j<8; j++) {
+				if (move(i,j)) {
+					Piece p = Board.board[i][j];
+					if (Chess.hypeCheck(this, i, j, getX(), getY())) {
+						System.out.println(Chess.hypeCheck(this, i, j, getX(), getY()));
+							return false;
+					}
+				}
+			}
+		}
+		return true;
+	}*/
 
 }
