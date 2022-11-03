@@ -12,7 +12,7 @@ public class Rook extends Piece {
 	public boolean moved;
 
 	/**
-	* Creates the Rook object
+	* Creates the Rook object.
 	* <p>
 	* This method calls its super class piece 
 	* @param  x  the x coordinate of the rook

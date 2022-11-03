@@ -22,7 +22,7 @@ public class Bishop extends Piece {
 	
 	/**
 	* Returns true if the move made by the bishop is legal.
-	* The dX and dY arguments must be integers 
+	* The dX and dY arguments must be integers. 
 	* <p>
 	* This method is overridden from its super class, piece
 	* @param  dX the x coordinate of where the bishop would like to move

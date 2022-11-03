@@ -145,7 +145,7 @@ public class King extends Piece {
 		int testX = x-1;
 		int testY = y-1;
 		if (move(testX,testY)) {
-			k = new King(testX, testY, color);
+			k = new King(testX, testY, color);.
 			test1 = k.inCheck();
 		} else {
 			test1 = false;

@@ -310,7 +310,7 @@ public class Chess {
 
 				Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
 
-				// keep track of king positions to use for check & checkmate, and castling
+				// keep track of king positions to use for check & checkmate, and castling.
 				// King k;
 
 				if (piece instanceof King) {

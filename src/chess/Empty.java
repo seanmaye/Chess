@@ -12,7 +12,7 @@ public class Empty extends Piece {
 	/**
 	* Creates the Empty object
 	* <p>
-	* This method calls its super class piece 
+	* This method calls its super class piece.
 	* @param  x  the x coordinate of the empty space
 	* @param  y  the y coordinate of the empty space
 	* @param  color the color of the empty space 

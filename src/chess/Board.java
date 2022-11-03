@@ -6,7 +6,7 @@ package chess;
 */
 public class Board {
 	/**
-	*2D array of Pieces which represents the chess board
+	*2D array of Pieces which represents the chess board.
 	*/
 	static Piece[][] board = new Piece[8][8];
 

@@ -24,7 +24,7 @@ public class Knight extends Piece {
 	
 	/**
 	* Returns true if the move made by the knight is legal. 
-	* The dX and dY arguments must be integers 
+	* The dX and dY arguments must be integers.
 	* <p>
 	* This method is overridden from its super class, piece
 	* @param  dX the x coordinate of where the knight would like to move

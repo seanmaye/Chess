@@ -6,7 +6,7 @@ package chess;
 */
 public class Queen extends Piece {
 	/**
-	* Creates the Queen object
+	* Creates the Queen object.
 	* <p>
 	* This method calls its super class piece 
 	* @param  x  the x coordinate of the queen

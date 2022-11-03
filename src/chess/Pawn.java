@@ -34,7 +34,7 @@ public class Pawn extends Piece {
 	* ability to move 2 spaces on their first move and en passant 
 	* The dX and dY arguments must be integers 
 	* <p>
-	* This method is overridden from its super class, piece
+	* This method is overridden from its super class, piece.
 	* @param  dX the x coordinate of where the pawn would like to move
 	* @param  dY the y coordinate of where the pawn would like to move
 	* @return      true if the move is legal and false if the move is illegal
