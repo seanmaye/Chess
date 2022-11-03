@@ -1,17 +1,47 @@
 package chess;
-
+/** Represents a pawn piece in the game of chess.   
+ * @author Vanessa Chin
+ * @author Sean Maye
+ * @version 1.0
+*/
 public class Pawn extends Piece {
+	/**
+	*Keeps track of whether or not a pawn has made its first move
+	*/
 	private boolean isFirstMove;
-	public int move;
+	/**
+	*Keeps the count of the number of moves the pawn made 
+	*/
+	private int move;
 
+	/**
+	* Creates the Pawn object
+	* <p>
+	* This method calls its super class piece 
+	* @param  x  the x coordinate of the pawn
+	* @param  y  the y coordinate of the pawn
+	* @param  color the color of the pawn piece 
+	* @see Piece 
+	*/
 	public Pawn(int x, int y, boolean color) {
 		super(x, y, color);
 		isFirstMove = true;
 		move=0;
 	}
-
+	/**
+	* Returns true if the move made by the pawn is legal.
+	* This method always handles special pawn cases such as their 
+	* ability to move 2 spaces on their first move and en passant 
+	* The dX and dY arguments must be integers 
+	* <p>
+	* This method is overridden from its super class, piece
+	* @param  dX the x coordinate of where the pawn would like to move
+	* @param  dY the y coordinate of where the pawn would like to move
+	* @return      true if the move is legal and false if the move is illegal
+	* @see Piece 
+	*/
 	public boolean move(int dX, int dY) {
-		if (Chess.turn != color) {
+		if (!King.isChecking&&Chess.turn != color) {
 			return false;
 		}
 		
@@ -21,8 +51,7 @@ public class Pawn extends Piece {
 		
 		
 		if (color) {
-			//System.out.println(x +" " +y);
-			if(x==3 &&Board.board[x][y-1]instanceof Pawn) {
+			if(x==3 &&y-1 >=0&&Board.board[x][y-1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y-1];
 				
 				if (toEnpassant.move==1) {
@@ -41,7 +70,7 @@ public class Pawn extends Piece {
 				}else {
 					return false;
 				}
-			}else if(x==3 &&Board.board[x][y+1]instanceof Pawn) {
+			}else if(x==3 && y+1<8&&Board.board[x][y+1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y+1];
 				
 				if (toEnpassant.move==1) {
@@ -81,7 +110,7 @@ public class Pawn extends Piece {
 				return false;
 			}
 		} else {
-			if(x==4 &&Board.board[x][y-1]instanceof Pawn) {
+			if(x==4 && y-1>=0 &&Board.board[x][y-1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y-1];
 				
 				if (toEnpassant.move==1) {
@@ -100,7 +129,7 @@ public class Pawn extends Piece {
 				}else {
 					return false;
 				}
-			}else if(x==4 &&Board.board[x][y+1]instanceof Pawn) {
+			}else if(x==4 &&y+1<8&&Board.board[x][y+1]instanceof Pawn) {
 				Pawn toEnpassant = (Pawn) Board.board[x][y+1];
 				
 				if (toEnpassant.move==1) {
@@ -147,7 +176,10 @@ public class Pawn extends Piece {
 
 	}
 	
-
+	/**
+	* Returns string that will represent the piece on the board
+	* @return      wp if the piece is white and bp if the piece is black
+	*/
 	public String toString() {
 		
 		if (color) {

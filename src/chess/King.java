@@ -4,6 +4,7 @@ public class King extends Piece {
 	public boolean moved;
 	public boolean castleL;
 	public boolean castleR;
+	public static boolean isChecking;
 	
 	public King(int x, int y, boolean color) {
 		super(x, y, color);
@@ -14,7 +15,7 @@ public class King extends Piece {
 
 	@Override
 	public boolean move(int dX, int dY) {
-		if (Chess.turn != color) {
+		if (!King.isChecking&&Chess.turn != color) {
 			return false;
 		}
 		
@@ -55,6 +56,13 @@ public class King extends Piece {
 		if ((dX==x || dX==x-1 || dX==x+1) && (dY==y || dY==y-1 || dY==y+1)) {
 			if (Board.board[dX][dY] instanceof Empty){
 				King k = new King(dX, dY, color);
+				if(color) {
+					Chess.wkx=dX;
+					Chess.wky=dY;
+				}else {
+					Chess.bkx=dX;
+					Chess.bky=dY;
+				}
 				if (k.inCheck()) {
 					return false;
 				}
@@ -62,6 +70,13 @@ public class King extends Piece {
 				return true;
 			} else if (!(Board.board[dX][dY] instanceof Empty) && (Board.board[dX][dY].getColor() != color)) {
 				King k = new King(dX, dY, color);
+				if(color) {
+					Chess.wkx=dX;
+					Chess.wky=dY;
+				}else {
+					Chess.bkx=dX;
+					Chess.bky=dY;
+				}
 				if (k.inCheck()) {
 					return false;
 				}
@@ -92,7 +107,7 @@ public class King extends Piece {
 	//detect check
 	public boolean inCheck() {
 		Piece p;
-		
+		isChecking=true;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				p = Board.board[i][j];
@@ -109,17 +124,21 @@ public class King extends Piece {
 				
 				//p is opposite color, threat
 				if (p.move(x,y)) {
+					isChecking=false;
 					return true;
+				}else {
 				}
+				
 			}
 		}
+		isChecking=false;
 		return false;
 	}
 	
 	
 	
 	//detect checkmate
-	public boolean inCheckmate() {
+	/*public boolean inCheckmate() {
 		King k;
 		
 		boolean test1;
@@ -201,7 +220,7 @@ public class King extends Piece {
 		
 		
 		return (test1 && test2 && test3 && test4 && test5 && test6 && test7 && test8);
-	}
+	}*/
 
 	
 	

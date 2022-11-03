@@ -1,8 +1,24 @@
 package chess;
-
+/** Represents a pawn piece in the game of chess.   
+ * @author Vanessa Chin
+ * @author Sean Maye
+ * @version 1.0
+*/
 public class Board {
+	/**
+	*2D array of Pieces which represents the chess board
+	*/
 	static Piece[][] board = new Piece[8][8];
 
+	/**
+	* Creates the Pawn object
+	* <p>
+	* This method calls its super class piece 
+	* @param  x  the x coordinate of the pawn
+	* @param  y  the y coordinate of the pawn
+	* @param  color the color of the pawn piece 
+	* @see Piece 
+	*/
 	public static void createDefaultBoard() {
 
 		// this would be a 2d array of pieces
@@ -54,8 +70,15 @@ public class Board {
 
 	}
 
-	// updates board if a move is legal
-	public static void updateBoard(Piece toMove, int x, int y) {
+	
+	/**
+	* Updates the board after a legal move was made
+	* @param  board  2D array of pieces, represents the board
+	* @param  toMove  piece which will be moved 
+	* @param  x  the x coordinate of the piece to be moved
+	* @param  y  the y coordinate of the piece to be moved 
+	*/
+	public static void updateBoard(Piece[][] board, Piece toMove, int x, int y) {
 		board[toMove.getX()][toMove.getY()] = toMove;
 
 		if (x % 2 == 0) {
@@ -72,8 +95,12 @@ public class Board {
 			}
 		}
 	}
-
-	public static void printBoard() {
+	
+	/**
+	* Prints out a board, a 2D array of pieces 
+	* @param  board  2D array of pieces, represents the board 
+	*/
+	public static void printBoard(Piece[][] board) {
 		int count = 8;
 		String lastRow = " a  b  c  d  e  f  g  h  ";
 		for (int i = 0; i < 8; i++) {

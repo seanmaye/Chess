@@ -1,14 +1,37 @@
 package chess;
-
+/** Represents a bishop piece in the game of chess.   
+ * @author Vanessa Chin
+ * @author Sean Maye
+ * @version 1.0
+*/
 public class Bishop extends Piece {
 
+	/**
+	* Creates the Bishop object
+	* <p>
+	* This method calls its super class piece 
+	* @param  x  the x coordinate of the bishop
+	* @param  y  the y coordinate of the bishop
+	* @param  color the color of the bishop piece 
+	* @see Piece 
+	*/
 	public Bishop(int x, int y, boolean color) {
 		super(x, y, color);
 	}
 
-	@Override
+	
+	/**
+	* Returns true if the move made by the bishop is legal.
+	* The dX and dY arguments must be integers 
+	* <p>
+	* This method is overridden from its super class, piece
+	* @param  dX the x coordinate of where the bishop would like to move
+	* @param  dY the y coordinate of where the bishop would like to move
+	* @return      true if the move is legal and false if the move is illegal
+	* @see Piece 
+	*/
 	public boolean move(int dX, int dY) {
-		if (Chess.turn != color) {
+		if (!King.isChecking&&Chess.turn != color) {
 			return false;
 		}
 		
@@ -113,7 +136,11 @@ public class Bishop extends Piece {
 		return false;
 
 	}
-
+	
+	/**
+	* Returns string that will represent the piece on the board
+	* @return      wB if the piece is white and bB if the piece is black
+	*/
 	public String toString() {
 		if (color == true) {
 			return "wB";

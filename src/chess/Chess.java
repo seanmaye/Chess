@@ -4,44 +4,115 @@ import java.util.Scanner;
 
 public class Chess {
 	public static boolean turn;
-	
+
 	public static boolean printBoard;
-	
 	public static int wkx = 7;
 	public static int wky = 4;
 	public static int bkx = 0;
 	public static int bky = 4;
-	
+	public static boolean wCheck = false;
+	public static boolean bCheck = false;
+
 	public static boolean check;
-	
+	public static Piece[][] ghostBoard = new Piece[Board.board.length][];
 	public static boolean drawRequest;
+
+	public static boolean hypeCheck(Piece piece, int dX, int dY, int toMoveX, int toMoveY) {
+		if (turn) {
+			King k;
+
+			piece.setX(dX);
+			piece.setY(dY);
+			Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+			k = (King) Board.board[wkx][wky];
+
+			if (k.inCheck()) {
+
+				for (int i = 0; i < Board.board.length; i++) {
+					Piece[] aMatrix = ghostBoard[i];
+					int aLength = aMatrix.length;
+					Board.board[i] = new Piece[aLength];
+					System.arraycopy(aMatrix, 0, Board.board[i], 0, aLength);
+				}
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						Piece p = ghostBoard[i][j];
+						p.x = i;
+						p.y = j;
+						if (p instanceof King) {
+							((King) p).trackKingPos();
+						}
+
+					}
+				}
+				return false;
+			}
+		} else if (!turn) {
+			King k;
+
+			piece.setX(dX);
+			piece.setY(dY);
+			Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+			k = (King) Board.board[bkx][bky];
+
+			if (k.inCheck()) {
+
+				for (int i = 0; i < Board.board.length; i++) {
+					Piece[] aMatrix = ghostBoard[i];
+					int aLength = aMatrix.length;
+					Board.board[i] = new Piece[aLength];
+					System.arraycopy(aMatrix, 0, Board.board[i], 0, aLength);
+				}
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						Piece p = Board.board[i][j];
+						p.x = i;
+						p.y = j;
+						if (p instanceof King) {
+							((King) p).trackKingPos();
+						}
+
+					}
+				}
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public static void main(String args[]) {
 		Scanner in = new Scanner(System.in);
 		Board.createDefaultBoard();
+		for (int i = 0; i < Board.board.length; i++) {
+			Piece[] aMatrix = Board.board[i];
+			int aLength = aMatrix.length;
+			ghostBoard[i] = new Piece[aLength];
+			System.arraycopy(aMatrix, 0, ghostBoard[i], 0, aLength);
+		}
 		String input = "";
-		
+
 		turn = true;
 		printBoard = true;
-		
+
 		check = false;
 		drawRequest = false;
-		
+
 		while (input != "end") {
 			if (printBoard) {
-				Board.printBoard();
+				Board.printBoard(Board.board);
+
 				System.out.println("\n");
-				
-				//print check message
-				if (check) {
-					System.out.println("Check"); //new line?
+
+				// print check message
+				if (wCheck && turn) {
+					System.out.println("WCheck"); // new line?
+				} else if (bCheck && !turn) {
+					System.out.println("BCheck");
 				}
 			} else {
 				printBoard = true;
 			}
-			
-			
-			
+
 			// boolean to keep track of whose turn it is
 			// white = true, black = false
 			if (turn == true) {
@@ -49,12 +120,10 @@ public class Chess {
 			} else {
 				System.out.print("Black's move: ");
 			}
-			
-			
-			
+
 			input = in.nextLine();
-			
-			//draw accept
+
+			// draw accept
 			if (drawRequest == true)
 				if (!input.equals("draw")) {
 					System.out.println("Illegal move, try again");
@@ -62,10 +131,9 @@ public class Chess {
 					continue;
 				} else {
 					break;
-			} 
-			
-			
-			//resign
+				}
+
+			// resign
 			if (input.equals("resign")) {
 				if (turn == true) {
 					System.out.println("Black wins");
@@ -75,9 +143,7 @@ public class Chess {
 					break;
 				}
 			}
-			
 
-			
 			char toTranslate1 = input.charAt(0);
 			int toTranslate2 = Character.getNumericValue(input.charAt(1));
 			char toTranslate3 = input.charAt(3);
@@ -174,16 +240,15 @@ public class Chess {
 				printBoard = false;
 				continue;
 			}
-			
 
-			//trim input string
+			// trim input string
 			if (input.length() >= 6) {
 				input = input.substring(6);
 			} else {
 				input = "-";
 			}
-			
-			//draw request
+
+			// draw request
 			if (!(input.equals("-"))) {
 				if (input.equals("draw?")) {
 					drawRequest = true;
@@ -194,56 +259,99 @@ public class Chess {
 				}
 			}
 
-			
+			for (int i = 0; i < Board.board.length; i++) {
+				Piece[] aMatrix = Board.board[i];
+				int aLength = aMatrix.length;
+				ghostBoard[i] = new Piece[aLength];
+				System.arraycopy(aMatrix, 0, ghostBoard[i], 0, aLength);
+			}
+
 			Piece piece = Board.board[toMoveX][toMoveY];
+
 			boolean isLegit = piece.move(destinationX, destinationY);
-			if (isLegit) {				
+			if (isLegit) {
+				King k;
+				if (turn && wCheck) {
+					boolean isCheck = hypeCheck(piece, destinationX, destinationY, toMoveX, toMoveY);
+
+					/*
+					 * piece.setX(destinationX); piece.setY(destinationY);
+					 * Board.updateBoard(Board.board, piece, toMoveX, toMoveY); k = (King)
+					 * Board.board[wkx][wky];
+					 * 
+					 * if (k.inCheck()) { check = true;
+					 * 
+					 * for (int i = 0; i < Board.board.length; i++) { Piece[] aMatrix =
+					 * ghostBoard[i]; int aLength = aMatrix.length; Board.board[i] = new
+					 * Piece[aLength]; System.arraycopy(aMatrix, 0, Board.board[i], 0, aLength); }
+					 * for (int i = 0; i < 8; i++) { for (int j = 0; j < 8; j++) { Piece p =
+					 * ghostBoard[i][j]; p.x = i; p.y = j; if (p instanceof King) { ((King)
+					 * p).trackKingPos(); } } } Board.printBoard(ghostBoard);
+					 * 
+					 */
+					if (isCheck) {
+						continue;
+					} else {
+
+						System.out.println("Illegal move, try again");
+						printBoard = false;
+						continue;
+					}
+				} else {
+					wCheck = false;
+				}
+
+				if (!turn && bCheck) {
+					System.out.println("Do a move to get you out of check");
+				}
+
 				piece.setX(destinationX);
 				piece.setY(destinationY);
-				
-				
-				//keep track of king positions to use for check & checkmate, and castling
-				King k;
+
+				Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+
+				// keep track of king positions to use for check & checkmate, and castling
+				// King k;
+
 				if (piece instanceof King) {
 					k = (King) piece;
 					k.trackKingPos();
-					
-					//castling
-					if (k.castleL==true) {
-						Rook r = (Rook)Board.board[destinationX][0];
+
+					// castling
+					if (k.castleL == true) {
+						Rook r = (Rook) Board.board[destinationX][0];
 						int tempx = r.getX();
 						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY + 1);
-						Board.updateBoard(r, tempx, tempy);
+						Board.updateBoard(Board.board,piece, tempx, tempy);
 						k.castleL = false;
 						r.moved = true;
 					}
-					if (k.castleR==true) {
-						Rook r = (Rook)Board.board[destinationX][7];
+					if (k.castleR == true) {
+						Rook r = (Rook) Board.board[destinationX][7];
 						int tempx = r.getX();
 						int tempy = r.getY();
 						r.setX(destinationX);
 						r.setY(destinationY - 1);
-						Board.updateBoard(r, tempx, tempy);
+						Board.updateBoard(Board.board,piece, tempx, tempy);
 						k.castleR = false;
 						r.moved = true;
 					}
 				}
-				//reset check
+				// reset check
 				check = false;
-				
-				
-				//promotion
+
+				// promotion
 				if (piece instanceof Pawn) {
-					if (piece.getColor()==true && piece.getX()==0) {
+					if (piece.getColor() == true && piece.getX() == 0) {
 						if (input.equals("-")) {
 							piece = new Queen(destinationX, destinationY, true);
 						}
-						String prom = input.substring(0,1);
+						String prom = input.substring(0, 1);
 						if (prom.equals('N')) {
 							piece = new Knight(destinationX, destinationY, true);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -252,7 +360,7 @@ public class Chess {
 						}
 						if (prom.equals('B')) {
 							piece = new Bishop(destinationX, destinationY, true);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -261,7 +369,7 @@ public class Chess {
 						}
 						if (prom.equals('R')) {
 							piece = new Rook(destinationX, destinationY, true);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -270,7 +378,7 @@ public class Chess {
 						}
 						if (prom.equals('Q')) {
 							piece = new Queen(destinationX, destinationY, true);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -278,14 +386,14 @@ public class Chess {
 							}
 						}
 					}
-					if (piece.getColor()==false && piece.getX()==7) {
+					if (piece.getColor() == false && piece.getX() == 7) {
 						if (input.equals("-")) {
 							piece = new Queen(destinationX, destinationY, false);
 						}
-						String prom = input.substring(0,1);
+						String prom = input.substring(0, 1);
 						if (prom.equals('N')) {
 							piece = new Knight(destinationX, destinationY, false);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -294,7 +402,7 @@ public class Chess {
 						}
 						if (prom.equals('B')) {
 							piece = new Bishop(destinationX, destinationY, false);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -303,7 +411,7 @@ public class Chess {
 						}
 						if (prom.equals('R')) {
 							piece = new Rook(destinationX, destinationY, false);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -312,7 +420,7 @@ public class Chess {
 						}
 						if (prom.equals('Q')) {
 							piece = new Queen(destinationX, destinationY, false);
-							//trim input
+							// trim input
 							if (input.length() >= 2) {
 								input = input.substring(2);
 							} else {
@@ -320,56 +428,26 @@ public class Chess {
 							}
 						}
 					}
-				}				
-				
-				
-				Board.updateBoard(piece, toMoveX, toMoveY);
-								
-				
-				//detect check: any piece of the opposite color can move to the king
-				k = (King)Board.board[wkx][wky];
-				if (!turn && k.inCheck()) {
-					check = true;
 				}
-				k = (King)Board.board[bkx][bky];
-				if (turn && k.inCheck()) {
-					check = true;
-				}
-				
-				
-				//detect checkmate
-				k = (King)Board.board[wkx][wky];
-				if (!turn && k.inCheckmate()) {
-					System.out.println("Checkmate\n");
-					System.out.println("Black wins");
-					break;
-				}
-				k = (King)Board.board[bkx][bky];
-				if (turn && k.inCheckmate()) {
-					System.out.println("Checkmate\n");
-					System.out.println("White wins");
-					break;
-				}
-				
-				
-				//prepare for next turn
+
+				Board.updateBoard(Board.board, piece, toMoveX, toMoveY);
+
+// prepare for next turn
 				if (turn == true) {
 					turn = false;
 				} else {
 					turn = true;
 				}
 				System.out.println("\n");
-				
-				
-				
+
 			} else {
 				System.out.println("Illegal move, try again");
 				printBoard = false;
 				continue;
 			}
-			
+
 		}
-		
+
 		in.close();
 
 	}
